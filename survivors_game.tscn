@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://hpxcflm7qxtc"]
+[gd_scene load_steps=5 format=3 uid="uid://hpxcflm7qxtc"]
 
 [ext_resource type="Script" path="res://survivors_game.gd" id="1_lt2gf"]
 [ext_resource type="PackedScene" uid="uid://bhuibj83mxr2g" path="res://player.tscn" id="1_t453c"]
 [ext_resource type="PackedScene" uid="uid://bfvbhejsld02f" path="res://tree.tscn" id="2_xr2wg"]
-[ext_resource type="PackedScene" uid="uid://cu2xjdi1au586" path="res://mob.tscn" id="3_c4rh2"]
 
 [sub_resource type="Curve2D" id="Curve2D_wmgh2"]
 _data = {
@@ -24,6 +23,7 @@ offset_bottom = 1080.0
 
 [node name="Player" parent="." instance=ExtResource("1_t453c")]
 position = Vector2(994, 538)
+platform_floor_layers = 4294967040
 
 [node name="Path2D" type="Path2D" parent="Player"]
 position = Vector2(-994, -538)
@@ -55,25 +55,15 @@ position = Vector2(987, 956)
 [node name="PineTree7" parent="." instance=ExtResource("2_xr2wg")]
 position = Vector2(1651, 881)
 
-[node name="Mob" parent="." instance=ExtResource("3_c4rh2")]
-position = Vector2(275, 511)
-
-[node name="Mob2" parent="." instance=ExtResource("3_c4rh2")]
-position = Vector2(222, 839)
-
-[node name="Mob3" parent="." instance=ExtResource("3_c4rh2")]
-position = Vector2(852, 332)
-
-[node name="Mob4" parent="." instance=ExtResource("3_c4rh2")]
-position = Vector2(1530, 567)
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
 autostart = true
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+[node name="GameOver" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -81,7 +71,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0745098, 0.0745098, 0.0745098, 0.792157)
 
-[node name="Label" type="Label" parent="CanvasLayer2/ColorRect"]
+[node name="Label" type="Label" parent="GameOver/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -94,6 +84,8 @@ offset_right = 46.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 100
 text = "GAME OVER"
 
+[connection signal="health_depleted" from="Player" to="." method="_on_player_health_depleted"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
